@@ -21,9 +21,9 @@ import org.glassfish.tyrus.client.ClientManager;
 
 import com.sun.org.apache.xerces.internal.util.URI;
 
-@ClientEndpoint
 public class CheckersClient extends JFrame implements MouseListener {
-    private static CountDownLatch latch;
+
+	
 
 	private CheckerboardCanvas cbCanvas; // the 'view' of the checkerboard
 	private CheckerBoard board; // the client's part of the 'model'
@@ -108,58 +108,7 @@ public class CheckersClient extends JFrame implements MouseListener {
 	public void mouseMoved(MouseEvent e) {
 	}
 	
-	@OnOpen
-    public void onOpen(Session session) {
-/*
-    	   logger.info("Connected ... " + session.getId());
-
-           try {
-
-               session.getBasicRemote().sendText("start");
-
-           } catch (IOException e) {
-
-               throw new RuntimeException(e);
-
-           }
-*/
-    }
-
- 
-
-    @OnMessage
-    public String onMessage(String message, Session session) {
-		return message;
-/*
-    	   BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
-
-           try {
-
-               logger.info("Received ...." + message);
-
-               String userInput = bufferRead.readLine();
-
-               return userInput;
-
-           } catch (IOException e) {
-
-               throw new RuntimeException(e);
-
-           }
-           */
-
-    }
-
- 
-
-    @OnClose
-    public void onClose(Session session, CloseReason closeReason) {
-/*
-        logger.info(String.format("Session %s close because of %s", session.getId(), closeReason));
-
-        latch.countDown();
-*/
-    }
+	
 	public static void main(String[] args) {
         latch = new CountDownLatch(1);
 		EventQueue.invokeLater(new Runnable() {
@@ -168,25 +117,7 @@ public class CheckersClient extends JFrame implements MouseListener {
 				CheckersClient game = new CheckersClient();
 
 				// TODO: does any other setup need to happen?
-				Session peer;
-
-				ClientManager client = ClientManager.createClient();
-
-				try {
-
-					peer = client.connectToServer(CheckersClient.class, new URI("ws://localhost:8025/WebCheckers/server"));
-
-					//createAndShowGUI(peer);
-
-					latch.await();
-
-				} catch (DeploymentException | URISyntaxException
-
-						| InterruptedException | IOException e) {
-
-					throw new RuntimeException(e);
-
-				}
+				
 
 			}
 		});
