@@ -110,7 +110,6 @@ public class CheckersClient extends JFrame implements MouseListener {
 	
 	
 	public static void main(String[] args) {
-        latch = new CountDownLatch(1);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {

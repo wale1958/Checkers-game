@@ -19,7 +19,7 @@ import org.glassfish.tyrus.client.ClientManager;
 import com.sun.org.apache.xerces.internal.util.URI;
 
 @ClientEndpoint
-public class CheckersClientEndpoint extends Endpoint{
+public class CheckersClientEndpoint {
 	private static CountDownLatch latch;
 	
 	@OnOpen
@@ -81,6 +81,7 @@ public class CheckersClientEndpoint extends Endpoint{
     
     public static void go(){
     	Session peer;
+    	 latch = new CountDownLatch(1);
 
 		ClientManager client = ClientManager.createClient();
 
@@ -100,12 +101,4 @@ public class CheckersClientEndpoint extends Endpoint{
 
 		}
     }
-
-
-
-	@Override
-	public void onOpen(Session arg0, EndpointConfig arg1) {
-		// TODO Auto-generated method stub
-		
-	}
 }
