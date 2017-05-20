@@ -1,5 +1,7 @@
 package checkers.server;
 
+import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.websocket.CloseReason;
@@ -10,9 +12,9 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import cMessage.MoveMessage;
 import cMessage.MoveMessageDecoder;
 import cMessage.MoveMessageEncoder;
-import checkers.common.CheckerBoard;
 
 @ServerEndpoint(value = "/server",decoders = { MoveMessageDecoder.class }, encoders = {MoveMessageEncoder.class })
 public class CheckersServerEndpoint {
@@ -27,28 +29,28 @@ public class CheckersServerEndpoint {
 
  
     @OnMessage
-    public void onMessage(Session peer, CheckerBoard board) throws EncodeException {
+    public void onMessage(Session peer, MoveMessage mMsg) throws EncodeException {
 
-      //  logger.log(Level.FINE, "Message {0} from {1}", new Object[]{board, peer.getId()});
+      logger.log(Level.FINE, "Message {0} from {1}", new Object[]{mMsg, peer.getId()});
 
-/*
+
 
         for (Session other : peer.getOpenSessions()) {
 
             try {
 
-                other.getBasicRemote().sendObject(msg);
+                other.getBasicRemote().sendObject(mMsg);
 
             } catch (IOException ex) {
 
-                Logger.getLogger(PokeServerEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CheckersServerEndpoint.class.getName()).log(Level.SEVERE, null, ex);
 
             }
 
 
 
         }
-*/
+
     }
 
  

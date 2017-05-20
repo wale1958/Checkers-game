@@ -6,7 +6,6 @@ import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
-import checkers.common.CheckerBoard;
 
 public class MoveMessageEncoder implements Encoder.Text<MoveMessage> {
 

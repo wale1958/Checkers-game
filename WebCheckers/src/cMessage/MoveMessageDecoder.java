@@ -8,7 +8,6 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-import checkers.common.CheckerBoard;
 
 public class MoveMessageDecoder implements Decoder.Text<Message> {
 
