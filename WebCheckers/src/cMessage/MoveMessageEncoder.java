@@ -8,7 +8,7 @@ import javax.websocket.EndpointConfig;
 
 import checkers.common.CheckerBoard;
 
-public class CheckersEncoder implements Encoder.Text<MoveMessage> {
+public class MoveMessageEncoder implements Encoder.Text<MoveMessage> {
 
 	@Override
 	public void destroy() {

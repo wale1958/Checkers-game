@@ -21,9 +21,11 @@ import org.glassfish.tyrus.client.ClientManager;
 
 import com.sun.org.apache.xerces.internal.util.URI;
 
+import cMessage.MoveMessage;
+
 public class CheckersClient extends JFrame implements MouseListener {
 
-	
+	private Session session;
 
 	private CheckerboardCanvas cbCanvas; // the 'view' of the checkerboard
 	private CheckerBoard board; // the client's part of the 'model'
@@ -34,14 +36,14 @@ public class CheckersClient extends JFrame implements MouseListener {
 
 	private SquarePlayer currentPlayer;
 
-	public CheckersClient() {
-
+	public CheckersClient(Session session) {
 		super("NetCheckers");
 		setSize(450, 450);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		this.session=session;
 		board = new CheckerBoard(); // Create the 'model'
 
 		cbCanvas = new CheckerboardCanvas(board);
@@ -88,8 +90,28 @@ public class CheckersClient extends JFrame implements MouseListener {
 																// checkerboard's
 																// location
 		int toCol = cbCanvas.getCol(e.getX());
-
 		// TODO: what happens here?
+		sendMoveMessage(toRow, toCol);
+	}
+
+	/*public void receiveMove(MoveMessage mMsg) {
+
+		messageArea.append(pokeMsg.getID() + " poked.\n");
+
+	}
+	*/
+	
+	private void sendMoveMessage(int toRow, int toCol) {
+		MoveMessage mMsg = new MoveMessage(fromRow, fromCol, toRow, toCol);
+		try {
+
+			session.getBasicRemote().sendObject(mMsg);
+
+		} catch (IOException | EncodeException e) {
+
+			System.err.println("Problem with sending a poke-message.");
+
+		}
 	}
 
 	// not used
@@ -113,7 +135,7 @@ public class CheckersClient extends JFrame implements MouseListener {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				CheckersClient game = new CheckersClient();
+				//CheckersClient game = new CheckersClient();
 
 				// TODO: does any other setup need to happen?
 				

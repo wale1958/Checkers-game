@@ -10,11 +10,11 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
-import cMessage.CheckersDecoder;
-import cMessage.CheckersEncoder;
+import cMessage.MoveMessageDecoder;
+import cMessage.MoveMessageEncoder;
 import checkers.common.CheckerBoard;
 
-@ServerEndpoint(value = "/server",decoders = { CheckersDecoder.class }, encoders = {CheckersEncoder.class })
+@ServerEndpoint(value = "/server",decoders = { MoveMessageDecoder.class }, encoders = {MoveMessageEncoder.class })
 public class CheckersServerEndpoint {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
