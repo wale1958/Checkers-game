@@ -21,17 +21,12 @@ public class CheckersServerEndpoint {
 	 
 
     @OnOpen
-
     public void onOpen(Session peer) {
-
         logger.info("Connected ... " + peer.getId());
-
     }
 
  
-
     @OnMessage
-
     public void onMessage(Session peer, CheckerBoard board) throws EncodeException {
 
       //  logger.log(Level.FINE, "Message {0} from {1}", new Object[]{board, peer.getId()});
@@ -59,9 +54,7 @@ public class CheckersServerEndpoint {
  
 
     @OnClose
-
     public void onClose(Session session, CloseReason closeReason) {
-
         logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));
 
     }

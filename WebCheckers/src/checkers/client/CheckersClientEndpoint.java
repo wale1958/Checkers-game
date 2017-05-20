@@ -3,30 +3,21 @@ package checkers.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
-import javax.enterprise.inject.spi.DeploymentException;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.Endpoint;
-import javax.websocket.EndpointConfig;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 
 import org.glassfish.tyrus.client.ClientManager;
-
-import com.sun.org.apache.xerces.internal.util.URI;
 
 import cMessage.MoveMessageDecoder;
 import cMessage.MoveMessageEncoder;
 
-@ClientEndpoint (decoders = { MoveMessageDecoder.class }, encoders = {MoveMessageEncoder.class })
+@ClientEndpoint(decoders = { MoveMessageDecoder.class }, encoders = { MoveMessageEncoder.class })
 public class CheckersClientEndpoint {
-	
+
 	private static CountDownLatch latch;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private static CheckersClient checkersClient;
@@ -68,7 +59,7 @@ public class CheckersClientEndpoint {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws javax.websocket.DeploymentException {
 		Session peer;
 		latch = new CountDownLatch(1);
 
@@ -89,5 +80,6 @@ public class CheckersClientEndpoint {
 
 		}
 	}
-	
+
+
 }
