@@ -22,7 +22,7 @@ public class CheckerBoard {
 	/**
 	 * Is a grid position valid?
 	 * @param row row location of checkerboard
-	 *@param ccol column location of checkerboard
+	 *@param col column location of checkerboard
 	 * @return returns true if row & col fall within the dimensions of the checkerboard
 	 */
 	
