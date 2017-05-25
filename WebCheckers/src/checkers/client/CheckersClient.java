@@ -32,7 +32,7 @@ import cMessage.PlayerMove;
 import cMessage.PlayerMoveEncoder;
 
 /**
- * This class combines GUI setup code and WebSockets client-endpoint code. 
+ * This class combines GUI setup code and WebSockets client-endpoint code.
  * 
  * @author Adebowale Ojetola
  *
@@ -45,11 +45,9 @@ public class CheckersClient extends JFrame implements MouseListener {
 	private CheckerBoard board; // the client's part of the 'model'
 	private int canvasTopInset; // distance Canvas is placed from the top
 	private int fromRow, fromCol; // Where the checker is moving from
-	private SquarePlayer currentPlayer;
-	// private Session session;
-	private CheckersClient game;
-	public static Session session;
-	static Session peer;
+	private CheckersClient game; // holds the instance of the CheckersClient to
+									// be created
+	static Session peer; // current session
 
 	public CheckersClient() {
 		super("NetCheckers");
@@ -85,19 +83,29 @@ public class CheckersClient extends JFrame implements MouseListener {
 		}
 	}
 
+	/**
+	 * updates the GUI as the board changes on the server side
+	 * 
+	 * @param session
+	 *            holds the session of the CheckersClient running
+	 * @param message
+	 *            holds a BoardMessage which holds the most recent version of
+	 *            the checkers board
+	 */
 	@OnMessage
 	public void onMessage(Session session, Message message) {
 
-		if (game == null) {
-			game = new CheckersClient();
-			game.setVisible(true);
+		if (game == null) { // if the client hasn't already been created
+			game = new CheckersClient(); // create it
+			game.setVisible(true); // make it visible
 		}
 		logger.info("Received ...." + message.toString());
 
 		if (message instanceof BoardMessage) {
 			board = ((BoardMessage) message).getBoard();
-			game.setTitle(((BoardMessage) message).getNotice());
-
+			game.setTitle(((BoardMessage) message).getNotice());//convey messages to the clients
+			
+			//setup the board
 			for (int i = 0; i < game.board.BOARD_SIZE; i++) {
 				for (int j = 0; j < game.board.BOARD_SIZE; j++) {
 					if (board.squareIsOccupied(i, j)) {
@@ -110,12 +118,8 @@ public class CheckersClient extends JFrame implements MouseListener {
 					}
 				}
 			}
-			game.repaint();
+			game.repaint(); //update the GUI
 
-			System.out.println(((BoardMessage) message).getBoard().toString());
-
-		} else if (message instanceof InitMessage) {
-			System.out.println(message);
 		}
 	}
 
@@ -125,22 +129,24 @@ public class CheckersClient extends JFrame implements MouseListener {
 		latch.countDown();
 	}
 
+	/**
+	 * connects to the server and asks for the pieces
+	 * 
+	 * @param args
+	 *            not used
+	 */
 	public static void main(String[] args) {
 		latch = new CountDownLatch(1);
 
 		ClientManager client = ClientManager.createClient();
 		try {
-			peer = client.connectToServer(CheckersClient.class, new URI("ws://localhost:8025/websockets/poke"));
-			createAndShowGUI(peer);
+			peer = client.connectToServer(CheckersClient.class, new URI("ws://localhost:8025/websockets/checkers"));
+			doInit(peer);
 			latch.await();
 
 		} catch (DeploymentException | URISyntaxException | InterruptedException | IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private static void createAndShowGUI(Session session) {
-		doInit(session);
 	}
 
 	/**
@@ -162,7 +168,7 @@ public class CheckersClient extends JFrame implements MouseListener {
 	/**
 	 * 
 	 * Attempts to move piece from mouse-press location to mouse-release
-	 * location.
+	 * location. Sends the locations to the Server
 	 * 
 	 * @param e
 	 *            the mouse event that just occurred
@@ -178,18 +184,26 @@ public class CheckersClient extends JFrame implements MouseListener {
 																// location
 		int toCol = cbCanvas.getCol(e.getX());
 
-		// TODO: what happens here?
 		sendMove(fromRow, fromCol, toRow, toCol); // send the move to the server
 		// for debugging
 		System.err.println("Mouse down: " + toRow + "-" + toCol);
 	}
 
+	/**
+	 * Sends the attempted move to the Server
+	 * 
+	 * @param fromRow
+	 *            the row the mouse was clicked on
+	 * @param fromCol
+	 *            the column the mouse was clicked on
+	 * @param toRow
+	 *            the row the mouse was released on
+	 * @param toCol
+	 *            the column the mouse was released on
+	 */
 	private static void sendMove(int fromRow, int fromCol, int toRow, int toCol) {
 
 		PlayerMove pMove = new PlayerMove(fromRow, fromCol, toRow, toCol);
-		// for debugging
-		System.out.println(peer);
-		System.out.println(pMove);
 
 		try {
 			peer.getBasicRemote().sendObject(pMove);
@@ -214,6 +228,13 @@ public class CheckersClient extends JFrame implements MouseListener {
 	public void mouseMoved(MouseEvent e) {
 	}
 
+	/**
+	 * Used to start up the connection in order for the Server to return all the
+	 * pieces in their starting position
+	 * 
+	 * @param session
+	 *            holds the session of the CheckersClient running
+	 */
 	private static void doInit(Session session) {
 		InitMessage initmsg = new InitMessage("Let's play");
 		try {
@@ -224,4 +245,3 @@ public class CheckersClient extends JFrame implements MouseListener {
 	}
 
 }
-
