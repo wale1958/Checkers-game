@@ -1,5 +1,4 @@
 package cMessage;
-
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.websocket.EncodeException;
@@ -7,7 +6,7 @@ import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
 
-public class MoveMessageEncoder implements Encoder.Text<MoveMessage> {
+public class PlayerMoveEncoder implements Encoder.Text<PlayerMove> {
 
 	@Override
 	public void destroy() {
@@ -22,18 +21,19 @@ public class MoveMessageEncoder implements Encoder.Text<MoveMessage> {
 	}
 
 	@Override
-	public String encode(MoveMessage mMsg) throws EncodeException {
+	public String encode(PlayerMove pMsg) throws EncodeException {
 		// TODO Auto-generated method stub
-		JsonObject jsonMoveMessage = Json.createObjectBuilder()
-				.add("type", "move")
-				.add("fromCol", mMsg.getFromCol())
-				.add("fromRow", mMsg.getFromRow())
-				.add("toCol", mMsg.getToCol())
-				.add("toRow", mMsg.getToRow())
+		JsonObject jsonPlayerMove = Json.createObjectBuilder()
+				.add("type", "PlayerMove")
+				.add("fromCol", pMsg.getFromCol())
+				.add("fromRow", pMsg.getFromRow())
+				.add("toCol", pMsg.getToCol())
+				.add("toRow", pMsg.getToRow())
 				.build();
 
-		return jsonMoveMessage.toString();
+		return jsonPlayerMove.toString();
 
-	}
+		}
+
 
 }

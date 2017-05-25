@@ -1,17 +1,21 @@
 package cMessage;
 
-public class MoveMessage extends Message {
+import checkers.common.SquarePlayer;
+
+public class PlayerMove extends Message{
 	int fromRow;
 	int fromCol;
 	int toRow;
 	int toCol;
+	//SquarePlayer player;
 
-	public MoveMessage(int fromRow, int fromCol, int toRow, int toCol) {
+	public PlayerMove(int fromRow, int fromCol, int toRow, int toCol) {
 
 		this.fromRow = fromRow;
 		this.fromCol= fromCol;
 		this.toRow=toRow;
 		this.toCol= toCol;
+		//this.player=player;
 
 	}
 
@@ -30,4 +34,8 @@ public class MoveMessage extends Message {
 	public int getToCol() {
 		return toCol;
 	}
+	/*public SquarePlayer getPlayer(){
+		return player;
+	}*/
+
 }

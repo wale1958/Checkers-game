@@ -1,4 +1,4 @@
-package checkers.client;
+/*package checkers.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,4 +82,4 @@ public class CheckersClientEndpoint {
 	}
 
 
-}
+}*/
