@@ -5,10 +5,16 @@ import java.io.InputStreamReader;
 
 import org.glassfish.tyrus.server.*;
 
+/**
+ * Creates a server for clients to connect to
+ * 
+ * @author adebowale
+ *
+ */
 public class CheckersServer {
 
 	/**
-	 * run the server
+	 * Triggers the server creation
 	 * 
 	 * @param args
 	 *            not used

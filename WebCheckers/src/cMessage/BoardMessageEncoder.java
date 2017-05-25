@@ -7,24 +7,43 @@ import javax.websocket.EndpointConfig;
 
 import checkers.common.CheckerBoard;
 
+/**
+ * Encodes BoardMessage
+ * 
+ * @author adebowale
+ *
+ */
 public class BoardMessageEncoder implements Encoder.Text<BoardMessage> {
 
 	@Override
 	public String encode(BoardMessage msg) throws EncodeException {
+		// Rather than sending the whole board, I decided to make a string
+		// separated by tokens to hold the value of the pieces that are not
+		// empty
 		String temp = "";
 		for (int i = 0; i < msg.getBoard().BOARD_SIZE; i++) {
-			for (int j = 0; j < msg.getBoard().BOARD_SIZE; j++) {
-				if (msg.getBoard().squareIsOccupied(i, j)) {
-					temp = temp + "|" + Integer.toString(i) + ":" + Integer.toString(j) +":"
+			for (int j = 0; j < msg.getBoard().BOARD_SIZE; j++) {// for
+																	// everything
+																	// on the
+																	// board
+				if (msg.getBoard().squareIsOccupied(i, j)) {// if the
+															// coordinates are
+															// not empty
+					temp = temp + "|" + Integer.toString(i) + ":" + Integer.toString(j) + ":"// add
+																								// the
+																								// details
+																								// of
+																								// that
+																								// coordinate
 							+ (msg.getBoard().isPlayerOne(i, j) ? "1" : "2") + ":"
 							+ (msg.getBoard().isKing(i, j) ? "k" : "p");
 				}
 			}
 		}
-		temp="|"+msg.getNotice()+temp;
-		JsonObject jsonPokeMessage = Json.createObjectBuilder().add("type", "mainBoard").add("board", temp).build();
+		temp = "|" + msg.getNotice() + temp;
+		JsonObject jsonBoardMessage = Json.createObjectBuilder().add("type", "mainBoard").add("board", temp).build();
 
-		return jsonPokeMessage.toString();
+		return jsonBoardMessage.toString();
 	}
 
 	@Override
@@ -35,14 +54,4 @@ public class BoardMessageEncoder implements Encoder.Text<BoardMessage> {
 	public void init(EndpointConfig arg0) {
 	}
 
-	/*
-	 * String[] arr;
-	 * 
-	 * public MoveMessage(CheckerBoard board) { String[] arr; int z=0; arr = new
-	 * String[(board.BOARD_SIZE / 2) * 6]; for (int i = 0; i < board.BOARD_SIZE;
-	 * i++) { for (int j = 0; j < board.BOARD_SIZE; j++) { if
-	 * (board.squareIsOccupied(i, j)) { arr[z] = Integer.toString(i) + ":" +
-	 * Integer.toString(j) + (board.isPlayerOne(i, j) ? "1" : "2") + ":" +
-	 * (board.isKing(i, j)? "p": "k"); z++; } } } }
-	 */
 }

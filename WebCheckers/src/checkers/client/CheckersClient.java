@@ -32,7 +32,7 @@ import cMessage.PlayerMove;
 import cMessage.PlayerMoveEncoder;
 
 /**
- * This class combines GUI setup code and WebSockets client-endpoint code.
+ * This class combines GUI setup code and WebCheckers client-endpoint code.
  * 
  * @author Adebowale Ojetola
  *
@@ -55,7 +55,6 @@ public class CheckersClient extends JFrame implements MouseListener {
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("a");
 
 		board = new CheckerBoard(); // Create the 'model'
 
@@ -73,6 +72,12 @@ public class CheckersClient extends JFrame implements MouseListener {
 	private static CountDownLatch latch;
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
+	/**
+	 * Sends "start" to the server
+	 * 
+	 * @param session
+	 *            current session of the CheckersClient running
+	 */
 	@OnOpen
 	public void onOpen(Session session) {
 		logger.info("Connected ... " + session.getId());
@@ -103,9 +108,11 @@ public class CheckersClient extends JFrame implements MouseListener {
 
 		if (message instanceof BoardMessage) {
 			board = ((BoardMessage) message).getBoard();
-			game.setTitle(((BoardMessage) message).getNotice());//convey messages to the clients
-			
-			//setup the board
+			game.setTitle(((BoardMessage) message).getNotice());// convey
+																// messages to
+																// the clients
+
+			// setup the board
 			for (int i = 0; i < game.board.BOARD_SIZE; i++) {
 				for (int j = 0; j < game.board.BOARD_SIZE; j++) {
 					if (board.squareIsOccupied(i, j)) {
@@ -118,11 +125,19 @@ public class CheckersClient extends JFrame implements MouseListener {
 					}
 				}
 			}
-			game.repaint(); //update the GUI
+			game.repaint(); // update the GUI
 
 		}
 	}
 
+	/**
+	 * handles the message provided when a session is closed
+	 * 
+	 * @param session
+	 *            current Session running
+	 * @param closeReason
+	 *            reason the session was clossed
+	 */
 	@OnClose
 	public void onClose(Session session, CloseReason closeReason) {
 		logger.info(String.format("Session %s close because of %s", session.getId(), closeReason));

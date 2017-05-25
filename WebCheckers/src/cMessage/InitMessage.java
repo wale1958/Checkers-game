@@ -1,5 +1,12 @@
 package cMessage;
 
+/**
+ * Used to start up the connection in order for the Server to return all the
+ * pieces in their starting position
+ * 
+ * @author adebowale
+ *
+ */
 public class InitMessage extends Message {
 
 	private String request;
@@ -7,7 +14,12 @@ public class InitMessage extends Message {
 	public InitMessage(String request) {
 		this.request = request;
 	}
-	
-	public String getRequest() { return request; }
+
+	/**
+	 * @return request returns the request message sent by the client
+	 */
+	public String getRequest() {
+		return request;
+	}
 
 }

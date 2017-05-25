@@ -5,6 +5,11 @@ import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
 
+/**
+ * Encodes the {@link InitMessage} class
+ * @author adebowale
+ *
+ */
 public class InitMessageEncoder implements Encoder.Text<InitMessage> {
 
 	@Override

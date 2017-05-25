@@ -12,8 +12,8 @@ import javax.websocket.server.ServerEndpoint;
 import checkers.common.SquarePlayer;
 
 /**
- * Server Endpoint listens for 3 different types of messages and makes decisions
- * based on which one was received
+ * CheckersServerEndpoint listens for 3 different types of messages and makes
+ * decisions based on which one was received
  * 
  * @author Adebowale Ojetola
  *
@@ -30,8 +30,14 @@ public class CheckersServerEndpoint {
 	private static String playerOneID; // used to prevent a player from making a
 										// move on behalf of his opponent
 	private static String playerTwoID;
-	String notice = "*"; // message displayed on the title of the GUI
+	String notice = ""; // message displayed on the title of the GUI
 
+	/**
+	 * Creates the game to be played
+	 * 
+	 * @param peer
+	 *            client trying to establish connection
+	 */
 	@OnOpen
 	public void onOpen(Session peer) {
 		if (count == 2) { // if two players are already playing
@@ -66,8 +72,14 @@ public class CheckersServerEndpoint {
 	}
 
 	/**
+	 * Creates a board message to be sent to the client every time a move is
+	 * attempted and "valid"(not more than 2 clients allowed) clients ask to
+	 * play
+	 * 
 	 * @param peer
+	 *            client that sends a message
 	 * @param msg
+	 *            message sent by client
 	 * @throws EncodeException
 	 */
 	@OnMessage
@@ -157,8 +169,8 @@ public class CheckersServerEndpoint {
 		for (Session other : peer.getOpenSessions()) {
 			try {
 				other.getBasicRemote().sendObject(msg2);
-				if (model.gameOver()) {//if the game is over
-					other.close(); //close the session
+				if (model.gameOver()) {// if the game is over
+					other.close(); // close the session
 				}
 			} catch (IOException ex) {
 				Logger.getLogger(CheckersServerEndpoint.class.getName()).log(Level.SEVERE, null, ex);
@@ -167,6 +179,14 @@ public class CheckersServerEndpoint {
 
 	}
 
+	/**
+	 * handles the message provided when a session is closed
+	 * 
+	 * @param session
+	 *            current Session running
+	 * @param closeReason
+	 *            reason the session was clossed
+	 */
 	@OnClose
 	public void onClose(Session session, CloseReason closeReason) {
 		logger.info(String.format("Session %s closed because of %s", session.getId(), closeReason));

@@ -7,6 +7,12 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
+/**
+ * Decodes BoardMessage, InitMessage, and PlayerMoveMessage
+ * 
+ * @author adebowale
+ *
+ */
 public class MessageDecoder implements Decoder.Text<Message> {
 
 	@Override
@@ -15,7 +21,13 @@ public class MessageDecoder implements Decoder.Text<Message> {
 
 		if (jsonObject.getString("type").equals("mainBoard")) {
 			BoardMessage message = new BoardMessage(null, "");
-			message.buildBoard(jsonObject.getString("board"));
+			message.buildBoard(jsonObject.getString("board"));// convert from
+																// the string
+																// representation
+																// to
+																// CheckerBoard
+																// representation
+																// of the board
 			return message;
 		} else if (jsonObject.getString("type").equals("Init")) {
 			InitMessage message = new InitMessage(jsonObject.getString("Request"));
